@@ -41,7 +41,11 @@ spec:
   file_storage_size: "10Gi"
   file_storage_storage_class: gp2
   ingress_class_name: alb
-  ingress_host: k8s-pulp-galaxypu-7e26074386-d8a4c7a9234303d7.elb.eu-central-1.amazonaws.com
+  ingress_host: k8s-pulp-galaxypu-e6d8fe056a-1539789742.eu-central-1.elb.amazonaws.com
+  ingress_annotations:
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/ip-address-type: ipv4
+    alb.ingress.kubernetes.io/scheme: internet-facing
   ingress_type: ingress
   pulp_settings:
     api_root: "/api/galaxy/pulp/"
