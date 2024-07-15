@@ -40,7 +40,9 @@ spec:
   file_storage_access_mode: "ReadWriteOnce"
   file_storage_size: "10Gi"
   file_storage_storage_class: gp2
-  ingress_type: loadbalancer
+  ingress_class_name: alb
+  ingress_host: k8s-pulp-galaxypu-7e26074386-d8a4c7a9234303d7.elb.eu-central-1.amazonaws.com
+  ingress_type: ingress
   pulp_settings:
     api_root: "/api/galaxy/pulp/"
     allowed_export_paths:
