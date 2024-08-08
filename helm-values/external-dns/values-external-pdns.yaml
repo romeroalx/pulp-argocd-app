@@ -1,0 +1,35 @@
+provider: pdns
+# Sync policy seems too agresive. I prefer to delete manually entries no longer required
+policy: upsert-only
+sources:
+  - ingress
+extraArgs:
+  - --ingress-class=nginx-external-pdns
+registry: dynamodb
+txtOwnerId: ppkc
+domainFilters:
+  - powerdns.com
+  - powerdns.equipment
+  - romeroalx.work
+# logLevel: debug
+interval: 60s
+serviceAccount:
+  create: true
+  name: external-dns
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::886046197528:role/ppkc-external-dns-role
+env:
+  - name: EXTERNAL_DNS_PDNS_SERVER
+    valueFrom:
+      secretKeyRef:
+        name: pdns-api-secret
+        key: pdns-server
+  - name: EXTERNAL_DNS_PDNS_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: pdns-api-secret
+        key: pdns-api-key
+  - name: EXTERNAL_DNS_DYNAMODB_REGION
+    value: eu-central-1
+  - name: EXTERNAL_DNS_DYNAMODB_TABLE
+    value: ppkc-external-pdns
