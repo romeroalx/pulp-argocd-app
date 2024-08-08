@@ -39,3 +39,8 @@ Useful URLs:
     ```
 
 - Once uploaded, collections have to be approved unded "Collections/Approval"
+
+http://k8s-pulp-galaxypu-7e26074386-d8a4c7a9234303d7.elb.eu-central-1.amazonaws.com/api/galaxy/v3/auth/token/
+
+POST
+

@@ -1,59 +1,58 @@
+---
 apiVersion: repo-manager.pulpproject.org/v1beta2
 kind: Pulp
 metadata:
-  name: galaxy-pulp
+  name: pulp-galaxy
 spec:
-  deployment_type: galaxy
-  image: quay.io/pulp/galaxy-minimal
-  image_version: stable
-  image_web: quay.io/pulp/galaxy-web
-  image_web_version: stable
-  
   api:
     replicas: 1
   content:
     replicas: 1
-  worker:
-    replicas: 1
+  database:
+    postgres_storage_class: gp2
+  deployment_type: galaxy
+  image: quay.io/pulp/galaxy-minimal
+  image_pull_policy: IfNotPresent
+  image_version: stable
+  image_web: quay.io/pulp/galaxy-web
+  image_web_version: stable
+  ingress_annotations:
+    cert-manager.io/issuer: letsencrypt-clusterissuer-staging
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+  ingress_class_name: nginx-external-pdns
+  ingress_host: ansiblegalaxy.romeroalx.work
+  ingress_tls_secret: pulp-galaxy-letsencrypt
+  ingress_type: ingress
   migration_job:
     container:
       resource_requirements:
-        requests:
-          cpu: 1
         limits:
           cpu: 1
-  web:
-    replicas: 1
-    resource_requirements:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        cpu: 800m
-        memory: 1Gi
-    service_annotations:
-      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
-      service.beta.kubernetes.io/aws-load-balancer-ip-address-type: ipv4
-
-  database:
-    postgres_storage_class: gp2
-  file_storage_access_mode: "ReadWriteOnce"
-  file_storage_size: "10Gi"
-  file_storage_storage_class: gp2
-  ingress_class_name: alb
-  ingress_host: k8s-pulp-galaxypu-e6d8fe056a-1539789742.eu-central-1.elb.amazonaws.com
-  ingress_annotations:
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/ip-address-type: ipv4
-    alb.ingress.kubernetes.io/scheme: internet-facing
-  ingress_type: ingress
+        requests:
+          cpu: 1
+  object_storage_s3_secret: pulp-galaxy-s3-storage
   pulp_settings:
-    api_root: "/api/galaxy/pulp/"
     allowed_export_paths:
       - /tmp
     allowed_import_paths:
       - /tmp
     analytics: false
+    api_root: /api/galaxy/pulp/
+    aws_s3_endpoint_url: http://ppkc-pulp-galaxy-collections.s3.amazonaws.com/
     galaxy_feature_flags:
-      execution_environments: True
-      ai_deny_index: True
+      ai_deny_index: true
+      execution_environments: true
+    telemetry: false
+  sa_annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::886046197528:role/ppkc-pulp-s3-role
+  web:
+    replicas: 1
+    resource_requirements:
+      limits:
+        cpu: 800m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  worker:
+    replicas: 1
