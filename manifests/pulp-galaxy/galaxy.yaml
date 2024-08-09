@@ -19,7 +19,7 @@ spec:
   ingress_annotations:
     cert-manager.io/issuer: letsencrypt-clusterissuer-staging
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-  ingress_class_name: nginx-external-pdns
+  ingress_class_name: nginx-pulp-powerdns-com
   ingress_host: ansiblegalaxy.romeroalx.work
   ingress_tls_secret: pulp-galaxy-letsencrypt
   ingress_type: ingress

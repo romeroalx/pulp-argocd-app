@@ -8,7 +8,6 @@ extraArgs:
 registry: dynamodb
 txtOwnerId: ppkc
 domainFilters:
-  - powerdns.com
   - powerdns.equipment
   - romeroalx.work
 # logLevel: debug
