@@ -1,0 +1,10 @@
+controller:
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+      service.beta.kubernetes.io/aws-load-balancer-ip-address-type: ipv4
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+  ingressClassResource:
+    name: nginx-external-pdns
+  ingressClass: nginx-external-pdns
